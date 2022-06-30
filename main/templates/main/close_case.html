@@ -1,0 +1,100 @@
+{% extends 'main/base.html' %}
+
+{% block title %}סגירת תיק{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-xl-12">
+            <form method="POST" class="form-group" enctype="multipart/form-data">
+                {% csrf_token %}
+                <p><strong><u>פרטי עו"ד:</u></strong></p>
+                <div class="row form-group">
+                <div class="col-md-2">
+                    <label for="id_user" style="padding-left: 1%;">מוסר:</label></br>
+                    {{ form.user }}
+                </div>
+                <div class="col-md-2">
+                    <label for="id_lawyer" style="padding-left: 1%;">עורך דין:</label></br>
+                    {{ form.lawyer }}
+                </div>
+                <div class="col-md-2">
+                    <label for="id_deliver_type" style="padding-left: 1%;">סוג מסירה:</label>
+                    {{ form.deliver_type }}
+                </div>
+                <div class="col-md-3">
+                    <label for="id_lawyer_case_id" style="padding-left: 1%;">מספר תיק:</label>
+                    {{ form.lawyer_case_id }}
+                </div>
+                <div class="col-md-2">
+                    <label for="id_lawyer_client" style="padding-left: 1%;">לקוח:</label></br>
+                    {{ form.lawyer_client }}
+                </div>
+                </div>
+    
+                <p><strong><u>פרטי חייב:</u></strong></p>
+                <div class="row form-group">
+                <div class="col-md-3">
+                    <label for="id_client_name">שם חייב:</label>
+                    {{ form.client_name }}
+                </div>
+                <div class="col-md-3">
+                    <label for="id_client_id">ת"ז חייב:</label>
+                    {{ form.client_id }}
+                </div>
+                <div class="col-md-3">
+                    <label for="id_client_address">כתובת חייב:</label>
+                    {{ form.client_address }}
+                </div>
+                </div>
+
+                <p><strong><u>פרטי מסירה:</u></strong></p>
+                <div class="row form-group">
+                <div class="col-md-4">   
+                    <label for="id_deliver_man_name">שם מוסר:</label>
+                    {{ form.deliver_man_name }}
+                </div>
+                <div class="col-md-4">   
+                    <label for="id_deliver_address">כתובת מאותרת:</label>
+                    {{ form.deliver_address }}
+                </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-4">
+                        <label for="id_deliver_to">נמסר אל:</label>
+                        {{ form.deliver_to }}
+                    </div>
+                    <div class="col-md-4">
+                        <label for="id_close_date">תאריך סגירה:</label>
+                        {{ form.close_date }}
+                    </div>
+                </div>
+                
+                <div class="row form-group">
+                <div class="col-md-6">
+                    <label for="id_notes">הערות:</label></br>
+                    {{ form.notes }}
+                </div>
+                <div class="col-md-4">
+                    <label for="id_file">אישור מסירה:</label>
+                    {{ form.deliver_file }}
+                </div>
+                </div>
+                <button type="submit" class="btn btn-success">סגור</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('.datepicker').datepicker({
+            dateFormat: 'dd/mm/yy',
+            monthNames: [ "ינואר", "פברואר", "מרץ", "אפריל", "מאי", "יוני", "יולי", "אוגוסט", "ספטמבר", "אוקטובר", "נובמבר", "דצמבר" ],
+            monthNamesShort: [ "ינו", "פבר", "מרץ", "אפר", "מאי", "יונ", "יול", "אוג", "ספט", "אוק", "נוב", "דצמ" ],
+            dayNames: [ "ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת" ],
+            dayNamesMin: [ "א'", "ב'", "ג'", "ד'", "ה'", "ו'", "ש" ]
+        });
+    });
+</script>
+{% endblock content %}

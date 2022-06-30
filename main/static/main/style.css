@@ -1,0 +1,86 @@
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+body{
+    background-color: rgb(245, 245, 245);
+}
+.content{
+    margin-right: 20%;
+}
+.logo-img {
+    text-align: justify;
+    width: 700;
+}
+.logo-img img {
+    display: block;
+    margin-top: 5%;
+}
+.shadow-container{
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+.shadow-form{
+    padding: 5%;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
+}
+.shadow-form h3{
+    text-align: center;
+    color: #333;
+}
+.shadow-container form{
+    display: table;
+    padding: 10%;
+    border-spacing: 10px;
+}
+.btnSubmit
+{
+    width: 100%;
+    border-radius: 1rem;
+    padding: 1.5%;
+    border: none;
+    cursor: pointer;
+}
+.shadow-form .btnSubmit{
+    font-weight: 600;
+    color: #fff;
+    background-color: #0062cc;
+}
+.shadow-form .ForgetPwd{
+    color: #0062cc;
+    font-weight: 600;
+    text-decoration: none;
+}
+.shadow-item{
+    display: table-row;
+}
+.shadow-item label{
+    display: table-cell;
+}
+.shadow-item input{
+    display: table-cell;
+}
+.sidenav {
+    height: 100%;
+    width: 15%;
+    position: fixed;
+    z-index:1;
+    top:0;
+    right:0;
+    background-color:rgb(14, 13, 32);
+    overflow-x: hidden;
+    padding-top: 20px
+}
+.sidenav a {
+    padding: 6px 8px 16px;
+    text-decoration: none;
+    color: #818181;
+    font-size: 25px;
+    display: block;
+}
+.sidenav a:hover {
+    color:#f1f1f1;
+}
+.title {
+    padding-bottom: 5%;
+}

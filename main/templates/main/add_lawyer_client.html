@@ -1,0 +1,25 @@
+{% extends 'main/base.html' %}
+
+{% block title %}הוספת לקוח עו"ד{% endblock title %}
+
+{% block content %}
+<div class="container shadow-container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <form method="POST" class="form-group shadow-form">
+                {% csrf_token %} 
+                <div class="form-item shadow-item">
+                    <label for="id_lawyer" style="padding-left: 1%;">עורך דין:</label>
+                    {{ form.lawyer }}
+                </div>
+                <div class="form-item shadow-item">
+                    <label for="id_client" style="padding-left: 1%;">לקוח:</label>
+                    {{ form.client }}
+                </div>
+
+                <button type="submit" class="btn btn-success">הוסף</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

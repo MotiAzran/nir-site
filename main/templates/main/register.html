@@ -1,0 +1,37 @@
+{% extends 'main/base.html' %}
+
+{% block title %}הוסף עו"ד{% endblock title %}
+
+{% block content %}
+<div class="container shadow-container">
+<div class="row justify-content-center">
+<div class="col-lg-8 shadow-form">
+    <h3>הוספת עו"ד</h3>
+    <form method="post" action="{% url 'register' %}">
+        {% csrf_token %}
+        <div class="form-group shadow-item">
+            <label for="id_first_name">שם פרטי:</label>
+            {{ form.first_name }}
+            {{ form.first_name.errors }}
+        </div>
+        <div class="form-group shadow-item">
+            <label for="id_last_name">שם משפחה:</label>
+            {{ form.last_name }}
+            {{ form.last_name.errors }}
+        </div>
+        <div class="form-group shadow-item">
+            <label for="id_password1">סיסמה:</label>
+            {{ form.password1 }}
+            {{ form.password1.errors }}
+        </div>
+        <div class="form-group shadow-item">
+            <label for="id_password2">ווידוא סיסמה:</label>
+            {{ form.password2 }}
+            {{ form.password2.errors }}
+        </div>
+        <input type="submit" class="btnSubmit" value="הירשם"/>
+    </form>
+</div>
+</div>
+</div>
+{% endblock content %}

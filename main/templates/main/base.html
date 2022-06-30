@@ -1,0 +1,51 @@
+<!doctype html>
+<html dir="rtl" lang="he">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    {% load static %}
+    <link rel="stylesheet" href="https://cdn.rtlcss.com/bootstrap/v4.5.3/css/bootstrap.min.css" integrity="sha384-JvExCACAZcHNJEc7156QaHXTnQL3hQBixvj5RV5buE7vgnNEzzskDtx9NQ4p6BJe" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.rtlcss.com/bootstrap/v4.5.3/js/bootstrap.bundle.min.js" integrity="sha384-40ix5a3dj6/qaC7tfz0Yr+p9fqWLzzAXiwxVLt9dw7UjQzGYw6rWRhFAnRapuQyK" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'main/style.css' %}">
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+    
+    <head>
+        <title>{% block title %}{% endblock %}</title>
+    </head>
+
+    
+    <body>
+        <header>
+            <div class="sidenav">
+                <a href="/">תיקים קיימים</a>
+                {% if user.userprofile.is_groupadmin %}
+                <a href="{% url 'add_case' %}">תיק חדש</a>
+                <a href="{% url 'add_bill' %}">הוצא חשבונית</a>
+                <a href="{% url 'register' %}">הוסף עו"ד</a>
+                <a href="{% url 'add_lawyer_client' %}">הוסף לקוח לעו"ד</a>
+                {% else %}
+                <a href="#">שלח מייל</a>
+                {% endif %}
+                <a href="{% url 'logout' %}">התנתק</a>
+            </div>
+        </header>
+
+        <main>
+            <div class="content">
+                <div class="row title">
+                    <div class="col-2"></div>
+                    <div class="col-5 logo-img">
+                        <img src={% static 'main/logo/logo.png' %} width="700" height="250">
+                    </div>
+                    <div class="col-2"></div>
+                </div>   
+
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+    </body>
+</html>

@@ -1,0 +1,37 @@
+{% extends 'main/base.html' %}
+
+{% block title %}התחבר{% endblock title %}
+
+{% block content %}
+<div class="container shadow-container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 shadow-form">
+            {% if user.is_authenticated %}
+            <p>אתה כבר מחובר...</p>
+            {% endif %}
+            <h3>התחבר</h3>
+            <form method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                <div class="form-group shadow-item">
+                    <label for="id_username">שם משתמש:</label>
+                    {{ form.username }}
+                    {{ form.username.errors }}
+                </div>
+                <div class="form-group shadow-item">
+                    <label for="id_password">סיסמה:</label>
+                    {{ form.password }}
+                    {{ form.password.password }}
+                </div>
+                <input type="submit" class="btnSubmit" value="התחבר" {% if user.is_authenticated %}disabled style="background-color: grey; cursor: not-allowed;"{% endif %}/>
+                <input type="hidden" name="next" value="{{ next }}">
+            </form>
+            {% if form.errors %}
+                <div class="alert alert-danger">
+                    <p>שם משתמש או סיסמה לא נכונכים. נסה שוב.</p>
+                </div>
+            {% endif %}
+            <a href="#" class="ForgetPwd">שכחת סיסמה?</a>
+        </div>
+    </div>
+</div>
+{% endblock content %}

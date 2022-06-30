@@ -1,0 +1,225 @@
+{% extends 'main/base.html' %}
+
+{% block title %}{{ title }}{% endblock title %}
+
+{% block content %}
+<div class="container">
+<div class="row justify-content-center">
+<div class="col-xl-12">
+    <form method="POST" class="form-group" id="search_cases_form" clients-url="{% url 'ajax_load_clients' %}">
+        {% csrf_token %}
+
+        <p><strong><u>פרטי עו"ד:</u></strong></p>
+        <div class="row form-group">
+            {% if user.userprofile.is_groupadmin %}
+            <div class="col-md-2">
+                <label for="id_lawyer" style="padding-left: 1%;">עורך דין:</label></br>
+                {{ form.lawyer }}
+                {{ form.lawyer.errors }}
+            </div>
+            <div class="col-md-3">
+                <label for="id_case_id" style="padding-left: 1%;">מספר תיק פנימי:</label></br>
+                {{ form.case_id }}
+                {{ form.case_id.errors }}
+            </div>
+            {% else %}
+            <div class="col-md-5">
+                <label for="id_user" style="padding-left: 1%;">מוסר:</label></br>
+                {{ form.user }}
+                {{ form.user.errors }}
+            </div>
+            {% endif %}
+            <div class="col-md-2">
+                <label for="id_deliver_type" style="padding-left: 1%;">סוג מסירה:</label>
+                {{ form.deliver_type }}
+                {{ form.deliver_type.errors }}
+            </div>
+            <div class="col-md-2">
+                <label for="id_lawyer_client" style="padding-left: 1%;">לקוח:</label></br>
+                {{ form.lawyer_client }}
+                {{ form.lawyer_client.errors }}
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-3">
+                <label for="id_lawyer_case_id" style="padding-left: 1%;">מספר תיק:</label>
+                {{ form.lawyer_case_id }}
+                {{ form.lawyer_case_id.errors }}
+            </div>
+            <div class="col-md-1">   
+                <label for="id_status">סטטוס:</label>
+                {{ form.status }}
+            </div>
+        </div>
+
+        <p><strong><u>פרטי חייב:</u></strong></p>
+        <div class="row form-group">
+        <div class="col-md-3">
+            <label for="id_client_name">שם חייב:</label>
+            {{ form.client_name }}
+            {{ form.client_name.errors }}
+        </div>
+        <div class="col-md-3">
+            <label for="id_client_id">ת"ז חייב:</label>
+            {{ form.client_id }}
+            {{ form.client_id.errors }}
+        </div>
+        <div class="col-md-3">
+            <label for="id_client_address">כתובת חייב:</label>
+            {{ form.client_address }}
+            {{ form.client_address.errors }}
+        </div>
+        </div>
+
+        <p><strong><u>פרטי מסירה:</u></strong></p>
+        <div class="row form-group">
+        <div class="col-md-4">   
+            <label for="id_deliver_man_name">שם מוסר:</label>
+            {{ form.deliver_man_name }}
+            {{ form.deliver_man_name.errors }}
+        </div>
+        <div class="col-md-4">   
+            <label for="id_deliver_address">כתובת מאותרת:</label>
+            {{ form.deliver_address }}
+            {{ form.deliver_address.errors }}
+        </div>
+        </div>
+        <div class="row form-group">
+        <div class="col-md-4">
+            <label for="id_start_date">תאריך התחלה:</label>
+            {{ form.start_date }}
+        </div>
+        <div class="col-md-4">
+            <label for="id_end_date">תאריך סיום:</label>
+            {{ form.end_date }}
+            
+        </div>
+    </div>
+
+    
+    <button type="submit" class="btn btn-success">חפש</button>
+    </form>
+    {% if cases_list %}
+        <div class="row">
+            <table class="table table-bordered table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>מספר תיק</th>
+                        {% if user.userprofile.is_groupadmin %}
+                        <th>מספר תיק פנימי</th>
+                            <th>שם עו"ד</th>
+                        {% else %}
+                        <th>שם מוסר</th>
+                        {% endif %}
+                        <th>סטטוס</th>
+                        <th>סוג מסירה</th>
+                        <th>כתובת מסירה</th>
+                        <th>תאריך פתיחה</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for case in cases_list %}
+                        {% if case.status == 'Delivered' %}
+                            <tr class="table-success">
+                        {% elif case.status == 'Canceled' %}
+                        <tr class="table-danger">
+                            {% else %}
+                            <tr>
+                                {% endif %}
+                                
+                                <td>{{ case.lawyer_case_id }}</td>
+                                {% if user.userprofile.is_groupadmin %}
+                                <td>{{ case.id }}</td>
+                                <td>{{ case.lawyer.get_full_name }}</td>
+                                {% else %}
+                                <td>{{ case.user.get_full_name }}</td>
+                                {% endif %}
+                        <td>{{ case.get_status_display }}</td>
+                        <td>{{ case.get_deliver_type_display }}</td>
+                        <td>{{ case.client_address }}</td>
+                        <td>{{ case.open_date|date:'d/m/Y' }}</td>
+                        
+                        <td>
+                            <form action="{% url 'show_case_info'%}" method="post" style="display: inline">
+                                {% csrf_token %}
+                                <input type="hidden" name="case_id" value="{{case.id}}"/>
+                                <button type="submit" class="btn btn-success">מידע</button>
+                            </form>
+                            {% if user.userprofile.is_groupadmin %}
+                                <button type="submit" class="btn btn-success" onclick="location.href='{% url 'close_case' case.id %}'" {% if case.close_date %}disabled{% endif %}>{% if case.close_date %}תיק נסגר{% else %}סגור תיק{% endif %}</button>
+                                <button type="submit" class="btn btn-success" onclick="location.href='{% url 'edit_case' case.id %}'">ערוך תיק</button>
+                                {% else %}
+                                <form method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="case_id" value="{{ case.id }}"/>
+                                    <input type="file" name="case_file">
+                                    <button type="submit" class="btn btn-success">הוסף מסמך</button>
+                                </form>
+                                {% endif %} 
+                            </td>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% if is_paginated %}
+                <div class="row">
+                    <div class="col-md-6 ml-auto">
+                        <div class="pagination">
+                            <span class="step-links">
+                                {% if page_obj.has_previous %}
+                                <a href="{% url 'home' %}?page=1">&laquo; ראשון</a>
+                                <a href="?page={{ page_obj.previous_page_number }}">הקודם</a>
+                            {% endif %}
+                            
+                            <span class="current">
+                                עמוד {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                            </span>
+                            
+                            {% if page_obj.has_next %}
+                            <a href="{% url 'home' %}?page={{ page_obj.next_page_number }}">הבא</a>
+                                <a href="{% url 'home' %}?page={{ page_obj.paginator.num_pages }}">אחרון &raquo;</a>
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+        {% else %}
+            {% if request.method == 'POST' %}
+                <h3>אין לך תיקים התואמים לחיפוש</h3>
+            {% else %}
+                <h3>אין לך תיקים</h3>
+            {% endif %}
+        {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('.datepicker').datepicker({
+            dateFormat: 'dd/mm/yy',
+            monthNames: [ "ינואר", "פברואר", "מרץ", "אפריל", "מאי", "יוני", "יולי", "אוגוסט", "ספטמבר", "אוקטובר", "נובמבר", "דצמבר" ],
+            monthNamesShort: [ "ינו", "פבר", "מרץ", "אפר", "מאי", "יונ", "יול", "אוג", "ספט", "אוק", "נוב", "דצמ" ],
+            dayNames: [ "ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת" ],
+            dayNamesMin: [ "א'", "ב'", "ג'", "ד'", "ה'", "ו'", "ש" ]
+        });
+    });
+
+    $('#id_lawyer').change(function() {
+        var url = $("#search_cases_form").attr("clients-url");
+        var lawyer_id = $(this).val();
+    
+        $.ajax({
+            url: url,
+            data: {
+                'lawyer': lawyer_id
+            },
+            success: function(data) {
+                $("#id_lawyer_client").html(data)
+            }
+        });
+     });
+</script>
+{% endblock content %}

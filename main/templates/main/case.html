@@ -1,0 +1,81 @@
+{% extends 'main/base.html' %}
+
+{% block title %}פירוט תיק{% endblock title %}
+
+{% block content %}
+<div class="container">
+<div class="row justify-content-center">
+<div class="col-xl-12">
+<h3><strong><u>פרטי עו"ד:</u></strong></h3>
+<div class="row form-group">
+    <div class="col"></div>
+    <div class="col">
+        <label>שם: {{ lawyercase.lawyer.get_full_name }}</label>
+    </div>
+    <div class="col">
+        <label>מספר תיק: {{ lawyercase.lawyer_case_id }}</label>
+    </div>
+    <div class="col"></div>
+</div>
+
+<h3><strong><u>פרטי מסירה:</u></strong></h3>
+<div class="row form-group">
+    <div class="col">
+        <label>מוסר: {{ lawyercase.user.get_full_name }}</label>
+    </div>
+    <div class="col">
+        <label>סוג מסירה: {{ lawyercase.get_deliver_type_display }}</label>
+    </div>
+    <div class="col">
+        <label>שם מוסר: {{ lawyercase.deliver_man_name }}</label>
+    </div>
+    <div class="col">
+        <label>כתובת מאותרת: {{ lawyercase.deliver_address }}</label>
+    </div>
+</div>
+<div class="row form-group">
+    <div class="col">
+        <label>סטטוס: {{ lawyercase.get_status_display }}</label>
+    </div>
+    <div class="col">
+        <label>תאריך פתיחת תיק: {{ lawyercase.open_date|date:'d/m/Y' }}</label>
+    </div>
+    <div class="col">
+        <label>תאריך סגירת תיק: {% if lawyercase.close_date %}{{ lawyercase.close_date|date:'d/m/Y' }}{% else %}בתהליך{% endif %}</label>
+    </div>
+</div>
+
+<h3><strong><u>פרטי החייב:</u></strong></h3>
+<div class="row form-group">
+    <div class="col">
+        <label>שם: {{ lawyercase.client_name }}</label>
+    </div>
+    <div class="col">
+        <label>ת"ז: {{ lawyercase.client_id }}</label>
+    </div>
+    <div class="col">
+        <label>כתובת: {{ lawyercase.client_address }}</label>
+    </div>
+</div>
+
+<div class="row form-group">
+    <div class="col">
+        <label>הערות: {{ lawyercase.notes }}</label>
+    </div>
+</div>
+
+<div class="row form-group">
+    <div class="col"></div>
+    <div class="col">
+        <button type="button" name="save" value="save" class="btn btn-success" onclick="location.href='{% url 'download_case' lawyercase.id %}'">הורדה</button>
+
+        {% if lawyercase.deliver_file %}
+            <button type="button" name="save" value="save" class="btn btn-success" onclick="location.href='{% url 'download_case_approve' lawyercase.id %}'">הורדת אישור מסירה</button>
+        {% endif %}
+    </div>
+    <div class="col"></div>
+</div>
+</div>
+</div>
+</div>
+{% endblock content %}

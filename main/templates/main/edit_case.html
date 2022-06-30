@@ -1,0 +1,106 @@
+{% extends 'main/base.html' %}
+
+{% block title %}עריכת תיק{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-xl-12">
+            <form method="POST" class="form-group" enctype="multipart/form-data">
+                {% csrf_token %}
+                <p><strong><u>פרטי עו"ד:</u></strong></p>
+                <div class="row form-group">
+                <div class="col-md-2">
+                    <label for="id_user" style="padding-left: 1%;">מוסר:</label></br>
+                    {{ form.user }}
+                </div>
+                <div class="col-md-2">
+                    <label for="id_lawyer" style="padding-left: 1%;">עורך דין:</label></br>
+                    {{ form.lawyer }}
+                </div>
+                <div class="col-md-2">
+                    <label for="id_deliver_type" style="padding-left: 1%;">סוג מסירה:</label>
+                    {{ form.deliver_type }}
+                </div>
+                <div class="col-md-3">
+                    <label for="id_lawyer_case_id" style="padding-left: 1%;">מספר תיק:</label>
+                    {{ form.lawyer_case_id }}
+                </div>
+                <div class="col-md-3">
+                    <label for="id_lawyer_client" style="padding-left: 1%;">לקוח:</label></br>
+                    {{ form.lawyer_client }}
+                </div>
+                </div>
+    
+                <p><strong><u>פרטי חייב:</u></strong></p>
+                <div class="row form-group">
+                <div class="col-md-3">
+                    <label for="id_client_name">שם חייב:</label>
+                    {{ form.client_name }}
+                </div>
+                <div class="col-md-3">
+                    <label for="id_client_id">ת"ז חייב:</label>
+                    {{ form.client_id }}
+                </div>
+                <div class="col-md-3">
+                    <label for="id_client_address">כתובת חייב:</label>
+                    {{ form.client_address }}
+                </div>
+                </div>
+
+                {% if user.userprofile.is_groupadmin %}
+                    <p><strong><u>פרטי מסירה:</u></strong></p>
+                    <div class="row form-group">
+                    <div class="col-md-4">   
+                        <label for="id_deliver_man_name">שם מוסר:</label>
+                        {{ form.deliver_man_name }}
+                    </div>
+                    <div class="col-md-4">   
+                        <label for="id_deliver_address">כתובת מאותרת:</label>
+                        {{ form.deliver_address }}
+                    </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col">
+                            <label for="id_deliver_to">נמסר אל:</label>
+                            {{ form.deliver_to }}
+                        </div>
+                    </div>
+                {% endif %}
+                
+                <div class="row form-group">
+                <div class="col-md-6">
+                    {% if user.userprofile.is_groupadmin %}
+                        <label for="id_notes">הערות:</label></br>
+                        {{ form.notes }}
+                    {% endif %}
+                </div>
+                <div class="col-md-4">
+                    <label for="id_file">אישור מסירה:</label>
+                    {{ form.deliver_file }}
+                </div>
+                </div>
+                <div class="row form-group">
+                <div class="col-2"></div>
+                <div class="col-1">
+                    <button type="submit" class="btn btn-success">שמור</button>
+                </div>
+                <div class="col-1">
+                    <form action="{% url 'delete_case' %}" method="post" style="display: inline">
+                        {% csrf_token %}
+                        <input type="hidden" name="case_id" value="{{case.id}}"/>
+                        <button type="submit" class="btn btn-success">מחק</button>
+                    </form>
+                </div>
+                <div class="col-2">
+                    <form action="{% url 'cancel_case' %}" method="post" style="display: inline">
+                        {% csrf_token %}
+                        <input type="hidden" name="case_id" value="{{case.id}}"/>
+                        <button type="submit" class="btn btn-success">בטל תיק</button>
+                    </form>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}
